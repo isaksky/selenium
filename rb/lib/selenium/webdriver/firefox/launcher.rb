@@ -57,7 +57,10 @@ module Selenium
           @profile.port = @port
 
           @profile_dir = @profile.layout_on_disk
-          FileReaper << @profile_dir
+
+          unless @profile.persistent_model
+            FileReaper << @profile_dir
+          end
         end
 
         def start

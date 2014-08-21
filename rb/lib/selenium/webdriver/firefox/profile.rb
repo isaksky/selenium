@@ -14,7 +14,7 @@ module Selenium
           :log_file         => 'webdriver.log.file'
         }
 
-        attr_reader   :name, :log_file
+        attr_reader   :name, :log_file, :persistent_model
         attr_writer   :secure_ssl, :native_events, :load_no_focus_lib
 
         class << self
