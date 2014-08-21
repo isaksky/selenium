@@ -45,7 +45,8 @@ module Selenium
         #   driver = Selenium::WebDriver.for :firefox, :profile => profile
         #
 
-        def initialize(model = nil)
+        def initialize(model = nil, persistent_model = false)
+          @persistent_model = persistent_model
           @model = verify_model(model)
 
           model_prefs = read_model_prefs
@@ -70,8 +71,20 @@ module Selenium
         end
 
         def layout_on_disk
-          profile_dir = @model ? create_tmp_copy(@model) : Dir.mktmpdir("webdriver-profile")
-          FileReaper << profile_dir
+          profile_dir = if @model
+                          if @persistent_model
+                            @model
+                          else
+                            create_tmp_copy(@model) 
+                          end
+
+                        else 
+                          Dir.mktmpdir("webdriver-profile")
+                        end
+
+          unless @persistent_model
+            FileReaper << profile_dir 
+          end
 
           install_extensions(profile_dir)
           delete_lock_files(profile_dir)

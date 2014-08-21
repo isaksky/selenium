@@ -42,7 +42,8 @@ module Selenium
 
         def quit
           @binary.quit
-          FileReaper.reap(@profile_dir) if @profile_dir
+          # FileReaper.reap(@profile_dir) if @profile_dir
+          # Hmm, there seems to be some duplicate logic for reaping this dir
         end
 
         def find_free_port
